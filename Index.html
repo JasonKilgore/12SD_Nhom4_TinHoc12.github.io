@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IT Class Presentation — Nhóm 4</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- AOS (scroll animations) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <style>
+    :root{
+      --bg:#0f0f0f;
+      --card:#1a1a1a;
+      --muted:#9aa0a6;
+      --accent:#66ccff;
+      --gold:#ffd166;
+      --radius:16px;
+      --ease: cubic-bezier(.2,.9,.3,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Noto Sans",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--bg);
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      scroll-behavior:smooth;
+      line-height:1.45;
+    }
+
+    a{color:inherit; text-decoration:none}
+    img{display:block; max-width:100%}
+    .container{width:100%; max-width:1200px; margin:0 auto; padding:0 5%}
+
+    /* ===== COVER/HERO ===== */
+    .cover{
+      position:relative;
+      height:62vh;
+      min-height:420px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background-image:url('https://img.goodfon.com/original/2048x1152/0/93/effekt-prandtlia-gloerta-istrebitel-okb-sukhogo-maks-su-30-s.jpg');
+      background-size:cover;
+      background-position:center;
+    }
+    .cover::before{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+      pointer-events:none;
+    }
+    .cover-title{
+      position:relative;
+      z-index:2;
+      font-size:3.4rem;
+      font-weight:800;
+      padding:22px 36px;
+      border-radius:20px;
+      background:rgba(0,0,0,0.55);
+      color:#fff;
+      -webkit-user-select:none;
+      -moz-user-select:none;
+      user-select:none; /* prevent selection flicker */
+      text-align:center;
+    }
+
+    /* ===== SECTIONS / HEADERS ===== */
+    section{padding:56px 0}
+    .section-h{ text-align:center; font-size:2.05rem; margin:0 0 32px 0; font-weight:700; color:#fff; }
+
+    /* ===== TEAM ROW (single-line) ===== */
+    .intro-row{
+      display:flex;
+      gap:22px;
+      align-items:stretch;
+      justify-content:flex-start;
+      flex-wrap:nowrap; /* keep in one line */
+      overflow-x:auto;   /* allow horizontal scroll on small screens */
+      padding-bottom:6px; /* space for scrollbar */
+      -webkit-overflow-scrolling:touch;
+    }
+
+    /* nice thin scrollbar (optional, non-intrusive) */
+    .intro-row::-webkit-scrollbar{height:8px}
+    .intro-row::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06); border-radius:8px}
+    .intro-row::-webkit-scrollbar-track{background:transparent}
+
+    .person-card{
+      display:block;
+      min-width:230px;
+      width:23%;
+      background:var(--card);
+      padding:18px;
+      border-radius:14px;
+      transition:transform .45s var(--ease), box-shadow .45s var(--ease);
+      color:inherit;
+      box-shadow:0 8px 22px rgba(0,0,0,0.45);
+      text-decoration:none; /* remove underline */
+      flex:0 0 230px; /* fixed base width so they stay on one line */
+    }
+    /* on big screens allow slightly larger cards */
+    @media(min-width:1200px){ .person-card{flex:0 0 calc(23% - 22px); min-width:unset} }
+
+    .person-card:focus{outline: 3px solid rgba(102,204,255,0.12); transform:translateY(-6px)}
+    .person-card:hover{transform:translateY(-8px); box-shadow:0 18px 45px rgba(102,204,255,0.06)}
+
+    .person-photo{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      border-radius:12px;
+      margin-bottom:12px;
+      transform-origin:center;
+      animation:float 5.8s ease-in-out infinite;
+    }
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-7px)}100%{transform:translateY(0)}}
+    .person-card:hover .person-photo{animation-play-state:paused; transform:translateY(-6px) scale(1.02)}
+
+    .person-name{
+      font-size:1.12rem;
+      font-weight:700;
+      color:var(--gold);
+    }
+
+    /* ===== PROJECTS (single-line grid) ===== */
+    .projects-grid{
+      display:flex;
+      gap:18px;
+      flex-wrap:nowrap; /* keep on one line */
+      overflow-x:auto;
+      padding-bottom:6px;
+    }
+    .projects-grid::-webkit-scrollbar{height:8px}
+    .projects-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.06); border-radius:8px}
+
+    .project-box{
+      flex:0 0 200px;
+      background:#141414;
+      padding:18px;
+      border-radius:12px;
+      text-align:center;
+      transition:transform .28s var(--ease), box-shadow .28s var(--ease);
+      min-width:200px;
+    }
+    .project-box:hover{transform:scale(1.06); box-shadow:0 12px 30px rgba(102,204,255,0.06)}
+    .project-box a{color:var(--accent); font-weight:700; text-decoration:none}
+
+    /* ===== GLow separator ===== */
+    .glow-sep{height:4px; width:90%; margin:42px auto; background:linear-gradient(90deg,transparent,var(--accent),transparent); border-radius:8px; box-shadow:0 0 18px rgba(102,204,255,0.06)}
+
+    /* ===== CONTACT FORM ===== */
+    .contact-card{
+      background:linear-gradient(180deg,#151515,#121212);
+      padding:26px;
+      border-radius:14px;
+      max-width:640px;
+      margin:0 auto;
+      box-shadow:0 10px 30px rgba(0,0,0,0.45);
+    }
+    .form-row{display:grid; gap:12px}
+    .form-row input[type="text"], .form-row input[type="email"]{
+      width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:#222; color:#fff; font-size:1rem; outline:none; transition:box-shadow .18s, transform .18s;
+    }
+    .form-row input:focus{box-shadow:0 0 12px rgba(102,204,255,0.12); transform:translateY(-2px)}
+    .send-btn{width:100%; padding:12px 14px; border-radius:10px; border:0; font-weight:800; cursor:pointer; background:var(--accent); color:#000; margin-top:6px; transition:transform .18s, box-shadow .18s}
+    .send-btn:hover{transform:translateY(-4px); box-shadow:0 10px 30px rgba(102,204,255,0.12)}
+
+    /* ===== BACK TO TOP ===== */
+    #backToTop{position:fixed; right:20px; bottom:20px; z-index:999; border-radius:12px; background:var(--gold); border:none; padding:10px 14px; font-weight:800; display:none; cursor:pointer; box-shadow:0 10px 30px rgba(255,209,102,0.14); transition:transform .18s}
+    #backToTop:hover{transform:translateY(-3px)}
+
+    /* ===== FOOTER ===== */
+    footer{padding:22px 0; text-align:center; color:var(--muted); font-size:0.95rem; border-top:1px solid rgba(255,255,255,0.02); margin-top:40px}
+
+    /* ===== RESPONSIVE TWEAKS ===== */
+    @media (max-width:980px){
+      .cover-title{font-size:2.6rem; padding:16px 20px}
+    }
+    @media (max-width:640px){
+      .cover{height:46vh}
+      .cover-title{font-size:1.85rem}
+      .person-card{min-width:200px; flex:0 0 200px}
+      .project-box{flex:0 0 180px}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="cover" id="cover">
+    <div class="container" style="text-align:center;">
+      <h1 class="cover-title" data-aos="zoom-in">NHÓM 4 TIN HỌC</h1>
+    </div>
+  </header>
+
+  <!-- TEAM -->
+  <section class="intro-section">
+    <div class="container">
+      <h2 class="section-h" data-aos="fade-up">Meet the Team</h2>
+
+      <div class="intro-row" aria-label="Team members">
+        <a class="person-card" href="https://www.facebook.com/phan.nhat.tan.279525#" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="50">
+          <img class="person-photo" src="https://www.shutterstock.com/image-photo/cristiano-ronaldo-portugal-smiles-during-600nw-1536833990.jpg" alt="Phan Nhật Tân photo">
+          <div class="person-name">Phan Nhật Tân</div>
+        </a>
+
+        <a class="person-card" href="https://www.facebook.com/ghan208.gh#" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="150">
+          <img class="person-photo" src="https://cdn.tienphong.vn/images/75bdc0c2dc2492e3010f3533e66d7b5737e4b4889662451539b10c7abb1e3d97893d2fa9eadc10ef7915ae359b661a0d5a7afd9e82e1ee6f8744eee690118f7d/g5z7bmma0aa-g6k.jpg" alt="Phạm Thái Gia Hân photo">
+          <div class="person-name">Phạm Thái Gia Hân (LEADER 👑)</div>
+        </a>
+
+        <a class="person-card" href="https://www.facebook.com/nhat.tran.960853#" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="250">
+          <img class="person-photo" src="https://assets.goal.com/images/v3/bltc7aab82077f92003/1c7bcf4bdb3a8b3838830a34f21df25be1e8b42b.jpg?auto=webp&format=pjpg&width=3840&quality=60" alt="Trần Hoàng Nhật photo">
+          <div class="person-name">Trần Hoàng Nhật</div>
+        </a>
+
+        <a class="person-card" href="https://www.facebook.com/tran.nguyen.minh.quan.628850/" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="350">
+          <img class="person-photo" src="https://assets-us-01.kc-usercontent.com/31dbcbc6-da4c-0033-328a-d7621d0fa726/57b32e6a-873e-429b-88b2-4f7933e6846e/fotos%20sitio%20-%202025-09-11T094222.430.png?ver=03-06-2025?w=3840&q=75" alt="Trần Nguyễn Minh Quân photo">
+          <div class="person-name">Trần Nguyễn Minh Quân</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-sep" aria-hidden="true"></div>
+
+  <!-- PROJECTS -->
+  <section class="projects-section">
+    <div class="container">
+      <h2 class="section-h" data-aos="fade-up">Bài Tin Học</h2>
+
+      <div class="projects-grid">
+        <div class="project-box" data-aos="zoom-in" data-aos-delay="0"><a href="https://www.canva.com/design/DAGEFcgJ5FQ/VlPqjNySTZ8sBTvTwkac6w/edit" target="_blank" rel="noopener noreferrer">Bài 8</a></div>
+        <div class="project-box" data-aos="zoom-in" data-aos-delay="100"><a href="https://www.canva.com/design/DAGcvFdEMog/1S8_p0HnU8R6UInRa9xH8w/edit" target="_blank" rel="noopener noreferrer">Bài 9</a></div>
+        <div class="project-box" data-aos="zoom-in" data-aos-delay="200"><a href="https://www.canva.com/design/DAGcvFdEMog/1S8_p0HnU8R6UInRa9xH8w/edit" target="_blank" rel="noopener noreferrer">Bài 10</a></div>
+        <div class="project-box" data-aos="zoom-in" data-aos-delay="300"><a href="https://www.canva.com/design/DAF-c8KBets/Y78AUyTmKO_52zO3YJh5tQ/edit" target="_blank" rel="noopener noreferrer">Bài 11</a></div>
+        <div class="project-box" data-aos="zoom-in" data-aos-delay="400"><a href="https://www.canva.com/design/DAF-c8KBets/Y78AUyTmKO_52zO3YJh5tQ/edit" target="_blank" rel="noopener noreferrer">Bài 12</a></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-sep" aria-hidden="true"></div>
+
+  <!-- CONTACT FORM -->
+  <section class="contact-section">
+    <div class="container">
+      <div class="contact-card" data-aos="fade-up">
+        <h3 style="margin-top:0; text-align:center; font-size:1.3rem; color:var(--gold)">Liên Hệ Với Nhóm</h3>
+        <form class="form-row" onsubmit="event.preventDefault(); showFakeSubmit()">
+          <input type="text" placeholder="Tên của bạn" aria-label="Tên">
+          <input type="text" placeholder="Lớp (ví dụ: 12L)" aria-label="Lớp">
+          <input type="email" placeholder="Email (example@gmail.com)" aria-label="Email">
+          <button class="send-btn" type="submit">SEND</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- BACK TO TOP -->
+  <button id="backToTop" aria-label="Return to top" title="Lên đầu trang">↑</button>
+
+  <!-- FOOTER -->
+  <footer>© 2025 Nhóm 4 — Trình bày bởi Minh Quân</footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration:700, once:true, easing:'cubic-bezier(.2,.9,.3,1)' });
+
+    const backBtn = document.getElementById('backToTop');
+    const cover = document.getElementById('cover');
+
+    function onScroll(){
+      if(window.scrollY > 300) backBtn.style.display = 'block';
+      else backBtn.style.display = 'none';
+
+      // very subtle parallax: adjust cover background position
+      if(cover){
+        const y = Math.max(-80, -window.scrollY * 0.12);
+        cover.style.backgroundPosition = `center ${50 + (y/2)}%`;
+      }
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+
+    backBtn.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+    function showFakeSubmit(){
+      const btn = document.querySelector('.send-btn');
+      btn.disabled = true;
+      btn.textContent = 'Đã ghi nhận ✅';
+      setTimeout(()=>{ btn.disabled = false; btn.textContent = 'SEND'; }, 1400);
+    }
+
+    // make person cards keyboard-activatable
+    document.querySelectorAll('.person-card').forEach(el=>{
+      el.setAttribute('tabindex','0');
+      el.addEventListener('keypress', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          window.open(el.href, '_blank', 'noopener');
+        }
+      });
+    });
+
+    // prevent tiny accidental selection fragments (UX polish)
+    // prevent tiny accidental selection fragments (UX polish)
+document.addEventListener('selectionchange', ()=>{
+  const sel = document.getSelection();
+
+  // Do NOT interfere with typing in input boxes
+  const active = document.activeElement;
+  if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA")) return;
+
+  if(sel && sel.rangeCount && sel.toString().trim().length < 3)
+    sel.removeAllRanges();
+});
+
+  </script>
+</body>
+</html>
